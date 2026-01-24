@@ -46,14 +46,6 @@ function drawNet() {
 	}
 }
 
-/*
-canvas.addEventListener("mousemove", evt => {
-	const rect = canvas.getBoundingClientRect();
-	leftPaddle.y = evt.clientY - rect.top - leftPaddle.height * 2;
-});
-*/
-
-
 canvas.addEventListener("keydown", evt => {
 	if (evt.key === "ArrowDown") {
 		leftPaddle.y += 10;
