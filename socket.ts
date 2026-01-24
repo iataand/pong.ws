@@ -14,13 +14,9 @@ export function initWsServer(roomId: string): Promise<WebSocketServer> {
 
 		wss.on('connection', (ws) => {
 			ws.on('message', (data) => {
-				console.log('received: %s', data);
+				console.log(`received: ${data}`);
 				ws.send(data);
 			});
-
-			setInterval(() => {
-				ws.send('something');
-			}, 1000);
 		});
 	});
 }

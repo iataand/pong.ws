@@ -5,8 +5,10 @@ import { initWsServer } from './socket';
 const app = express();
 const port = 3000;
 
+app.use(express.static(`${__dirname}/public`));
+
 app.get('/', (_, res) => {
-	res.send('Hello World!')
+	res.sendFile(`${__dirname}/index.html`);
 });
 
 app.get('/createRoom', async (_, res) => {
@@ -14,7 +16,7 @@ app.get('/createRoom', async (_, res) => {
 
 	try {
 		await initWsServer(roomId);
-		res.json({ roomId, message: `Room created with id: ${roomId}` });
+		res.json({ roomId, message: `Room created with id: ${roomId}.` });
 
 	} catch (err) {
 		console.error(err);
@@ -23,6 +25,6 @@ app.get('/createRoom', async (_, res) => {
 });
 
 app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`)
+	console.log(`Example app listening on port ${port}.`)
 });
 
