@@ -46,10 +46,32 @@ function drawNet() {
 	}
 }
 
+/*
 canvas.addEventListener("mousemove", evt => {
 	const rect = canvas.getBoundingClientRect();
 	leftPaddle.y = evt.clientY - rect.top - leftPaddle.height * 2;
 });
+*/
+
+
+canvas.addEventListener("keydown", evt => {
+	if (evt.key === "ArrowDown") {
+		leftPaddle.y += 10;
+	}
+
+	if (evt.key === "ArrowUp") {
+		leftPaddle.y -= 10;
+	}
+
+	if (leftPaddle.y < 0) {
+		leftPaddle.y = 0;
+	}
+
+	if (leftPaddle.y + leftPaddle.height > canvas.height) {
+		leftPaddle.y = canvas.height - leftPaddle.height;
+	}
+});
+
 
 function resetBall() {
 	ball.x = canvas.width / 2;
