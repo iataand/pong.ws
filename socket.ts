@@ -21,6 +21,12 @@ export function initWsServer(roomId: string): Promise<WebSocketServer> {
 			ws.on('message', (data) => {
 				console.log(`received: ${data}`);
 				ws.send(data);
+
+				wss.clients.forEach((client) => {
+					if (client !== ws && client.readyState === WebSocket.OPEN) {
+						client.send(data);
+					}
+				})
 			});
 		});
 	});

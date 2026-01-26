@@ -4,6 +4,8 @@ const ctx = canvas.getContext('2d');
 const paddleWidth = 10;
 const paddleHeight = 100;
 
+const ws = new WebSocket('wss://localhost:8080/');
+
 const leftPaddle = {
 	x: 0,
 	y: canvas.height / 2 - paddleHeight / 2,
@@ -132,5 +134,21 @@ function game() {
 	update();
 	render();
 }
+
+async function connectToRoomSocket() {
+	const response = await fetch('http://localhost:3000/createRoom');
+	const { roomId } = await response.json();
+
+	console.log(roomId);
+
+	const ws = new WebSocket(`ws://localhost:8080/${roomId}`);
+	ws.addEventListener('message', async (event) => {
+		console.log('received: ' + event.data);
+		const text = await event.data.text();
+		console.log(text);
+	})
+}
+
+connectToRoomSocket();
 
 setInterval(game, 1000 / 60);

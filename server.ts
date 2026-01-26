@@ -1,6 +1,7 @@
 import express from 'express';
 import { generateRoomId } from './utils';
 import { initWsServer } from './socket';
+import cors from 'cors';
 
 const app = express();
 const port = 3000;
@@ -8,6 +9,8 @@ const port = 3000;
 const rooms: string[] = [];
 
 app.use(express.static(`${__dirname}/public`));
+
+app.use(cors());
 
 app.get('/', (_, res) => {
 	res.sendFile(`${__dirname}/index.html`);
