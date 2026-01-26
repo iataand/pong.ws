@@ -47,23 +47,19 @@ function drawNet() {
 }
 
 canvas.addEventListener("keydown", evt => {
+	//Collision check for top or bottom
+	if (leftPaddle.y < 0 || leftPaddle.y + leftPaddle.height > canvas.height) {
+		return;
+	}
+
 	if (evt.key === "ArrowDown") {
-		leftPaddle.y += 10;
+		leftPaddle.y += (leftPaddle.height / 2) * 0.2;
 	}
 
 	if (evt.key === "ArrowUp") {
-		leftPaddle.y -= 10;
-	}
-
-	if (leftPaddle.y < 0) {
-		leftPaddle.y = 0;
-	}
-
-	if (leftPaddle.y + leftPaddle.height > canvas.height) {
-		leftPaddle.y = canvas.height - leftPaddle.height;
+		leftPaddle.y -= (leftPaddle.height / 2) * 0.2;
 	}
 });
-
 
 function resetBall() {
 	ball.x = canvas.width / 2;
@@ -77,7 +73,7 @@ function update() {
 	ball.y += ball.velocityY;
 
 	// AI paddle movement
-	rightPaddle.y += (ball.y - (rightPaddle.y + rightPaddle.height / 2)) * 0.08;
+	//rightPaddle.y += (ball.y - (rightPaddle.y + rightPaddle.height / 2)) * 0.08;
 
 	// Ball collision with top/bottom
 	if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {

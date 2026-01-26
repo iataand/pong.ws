@@ -13,6 +13,11 @@ export function initWsServer(roomId: string): Promise<WebSocketServer> {
 		});
 
 		wss.on('connection', (ws) => {
+			if (wss.clients.size > 2) {
+				ws.close(1000, 'Server full.');
+				return;
+			}
+
 			ws.on('message', (data) => {
 				console.log(`received: ${data}`);
 				ws.send(data);
