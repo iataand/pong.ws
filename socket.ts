@@ -2,7 +2,7 @@ import { WebSocketServer } from "ws";
 
 export function initWsServer(roomId: string): Promise<WebSocketServer> {
 	return new Promise((resolve, reject) => {
-		const wss = new WebSocketServer({ host: 'localhost', path: `/${roomId}`, port: 8080 });
+		const wss = new WebSocketServer({ host: 'localhost', path: `/${roomId}`, port: 8081 });
 
 		wss.once('error', (err) => {
 			reject(new Error(`Failed to start WebSocketServer for room "${roomId}": ${err.message}`));

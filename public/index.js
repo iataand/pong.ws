@@ -4,8 +4,6 @@ const ctx = canvas.getContext('2d');
 const paddleWidth = 10;
 const paddleHeight = 100;
 
-const ws = new WebSocket('wss://localhost:8080/');
-
 const leftPaddle = {
 	x: 0,
 	y: canvas.height / 2 - paddleHeight / 2,
@@ -135,17 +133,37 @@ function game() {
 	render();
 }
 
+async function fetchRoomId() {
+	try {
+		const response = await fetch('http://localhost:3000/createRoom');
+		const { roomId } = await response.json();
+
+		return roomId;
+
+	} catch (error) {
+		console.error('Error when creating a room. ')
+	}
+}
+
 async function connectToRoomSocket() {
-	const response = await fetch('http://localhost:3000/createRoom');
-	const { roomId } = await response.json();
+	let roomId = localStorage.getItem('roomId');
 
-	console.log(roomId);
+	if (!roomId) {
+		const newRoomId = await fetchRoomId();
+		localStorage.setItem('roomId', newRoomId);
+	}
 
-	const ws = new WebSocket(`ws://localhost:8080/${roomId}`);
+	ws = new WebSocket(`ws://localhost:8081/${roomId}`);
 	ws.addEventListener('message', async (event) => {
-		console.log('received: ' + event.data);
 		const text = await event.data.text();
-		console.log(text);
+
+		if (text === 'j') {
+			rightPaddle.y += (leftPaddle.height / 2) * 0.2;
+		}
+
+		if (text === 'k') {
+			rightPaddle.y -= (leftPaddle.height / 5) * 0.2;
+		}
 	})
 }
 
